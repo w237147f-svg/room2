@@ -4,149 +4,72 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>360度パノラマツアー</title>
-    <!-- PannellumのCSSとJavaScript -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.css"/>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/pannellum@2.5.6/build/pannellum.js"></script>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: sans-serif;
-        }
-        #panorama {
-            width: 100vw;
-            height: 100vh;
-        }
-
-        /* カスタムホットスポット（電球アイコン）のスタイル */
+        body { margin: 0; padding: 0; font-family: sans-serif; }
+        #panorama { width: 100vw; height: 100vh; }
         .bulb-hotspot {
-            width: 60px;
-            height: 60px;
+            width: 60px; height: 60px;
             background-image: url('bulb.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            cursor: pointer;
-            opacity: 0.2; 
-            transition: all 0.3s ease;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            cursor: pointer; opacity: 0.2; transition: all 0.3s ease;
         }
-        .bulb-hotspot:hover {
-            opacity: 1;
-            transform: scale(1.1);
-        }
-
-        /* クイズ画面（モーダル）のスタイル */
+        .bulb-hotspot:hover { opacity: 1; transform: scale(1.1); }
         #quiz-overlay {
-            display: none;
-            position: absolute;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+            display: none; position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.7); z-index: 1000; justify-content: center; align-items: center;
         }
-        .quiz-box {
-            background: #fff;
-            padding: 30px;
-            border-radius: 10px;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-        }
-        .quiz-btn {
-            display: block;
-            width: 100%;
-            margin: 10px 0;
-            padding: 12px;
-            font-size: 16px;
-            cursor: pointer;
-            text-align: left;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            background-color: #f9f9f9;
-        }
+        .quiz-box { background: #fff; padding: 30px; border-radius: 10px; width: 80%; max-width: 500px; box-shadow: 0 5px 15px rgba(0,0,0,0.5); }
+        .quiz-btn { display: block; width: 100%; margin: 10px 0; padding: 12px; font-size: 16px; cursor: pointer; text-align: left; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9; }
         .quiz-btn:hover { background-color: #e9e9e9; }
-        #quiz-result {
-            margin-top: 20px;
-            padding: 15px;
-            border-radius: 5px;
-            display: none;
-            line-height: 1.5;
-        }
-        .close-btn {
-            display: block;
-            width: 100%;
-            margin-top: 20px;
-            padding: 10px;
-            background: #333;
-            color: #fff;
-            cursor: pointer;
-            border: none;
-            border-radius: 5px;
-        }
+        #quiz-result { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; line-height: 1.5; }
+        .close-btn { display: block; width: 100%; margin-top: 20px; padding: 10px; background: #333; color: #fff; cursor: pointer; border: none; border-radius: 5px; }
     </style>
 </head>
 <body>
 
 <div id="panorama"></div>
 
-<!-- クイズ画面のHTML -->
 <div id="quiz-overlay">
     <div class="quiz-box">
         <h3 style="margin-top: 0;">問題：</h3>
         <p>水の無駄を減らす行動として、適切なのはどれでしょう？</p>
-        
         <div id="quiz-choices">
             <button class="quiz-btn" onclick="answerQuiz('A')">A．少しだけ水が出る状態にする</button>
             <button class="quiz-btn" onclick="answerQuiz('B')">B．次の人が使うまで流しておく</button>
             <button class="quiz-btn" onclick="answerQuiz('C')">C．蛇口を閉めて水を止める</button>
         </div>
-
         <div id="quiz-result"></div>
-        
         <button class="close-btn" onclick="closeQuiz()">閉じる</button>
     </div>
 </div>
 
 <script>
-// クイズを表示する関数
 function showQuiz() {
     document.getElementById('quiz-overlay').style.display = 'flex';
     document.getElementById('quiz-choices').style.display = 'block';
     document.getElementById('quiz-result').style.display = 'none';
 }
 
-// クイズに解答したときの処理
 function answerQuiz(choice) {
     const resultDiv = document.getElementById('quiz-result');
     const choicesDiv = document.getElementById('quiz-choices');
-    
     choicesDiv.style.display = 'none';
     resultDiv.style.display = 'block';
-    
     const explanationText = "水を使っていないときに止めることで、使用水量を減らせます。節水は、水の供給や処理に伴うエネルギーの削減にもつながります。";
 
     if (choice === 'C') {
-        resultDiv.style.backgroundColor = '#d4edda';
-        resultDiv.style.color = '#155724';
-        resultDiv.innerHTML = '<h3 style="margin-top:0; color:#28a745;">正解！</h3>' + 
-                              '<p><strong>解説：</strong><br>' + explanationText + '</p>';
+        resultDiv.style.backgroundColor = '#d4edda'; resultDiv.style.color = '#155724';
+        resultDiv.innerHTML = '<h3 style="margin-top:0; color:#28a745;">正解！</h3><p><strong>解説：</strong><br>' + explanationText + '</p>';
     } else {
-        resultDiv.style.backgroundColor = '#f8d7da';
-        resultDiv.style.color = '#721c24';
-        resultDiv.innerHTML = '<h3 style="margin-top:0; color:#dc3545;">不正解...</h3>' + 
-                              '<p>正解は <strong>C</strong> です。</p>' +
-                              '<p><strong>解説：</strong><br>' + explanationText + '</p>';
+        resultDiv.style.backgroundColor = '#f8d7da'; resultDiv.style.color = '#721c24';
+        resultDiv.innerHTML = '<h3 style="margin-top:0; color:#dc3545;">不正解...</h3><p>正解は <strong>C</strong> です。</p><p><strong>解説：</strong><br>' + explanationText + '</p>';
     }
 }
 
-// クイズを閉じる処理
-function closeQuiz() {
-    document.getElementById('quiz-overlay').style.display = 'none';
-}
+function closeQuiz() { document.getElementById('quiz-overlay').style.display = 'none'; }
 
-// パノラマビューアーの設定
 pannellum.viewer('panorama', {
     "default": {
         "firstScene": "scene1",
@@ -159,25 +82,10 @@ pannellum.viewer('panorama', {
             "type": "equirectangular",
             "panorama": "66.jpg",
             "hotSpots": [
-                {
-                    "pitch": -5,
-                    "yaw": 210, 
-                    "type": "scene",
-                    "text": "地点2へ移動",
-                    "sceneId": "scene2",
-                    "targetYaw": "same",
-                    "targetPitch": "same"
-                },
-                // --- 修正箇所：地点3へ移動するアイコン ---
-                {
-                    "pitch": -5,
-                    "yaw": 0, // ★ -180度から真逆の0度に変更
-                    "type": "scene",
-                    "text": "地点3へ移動",
-                    "sceneId": "scene3",
-                    "targetYaw": "same",
-                    "targetPitch": "same"
-                }
+                { "pitch": -5, "yaw": 210, "type": "scene", "text": "地点2へ移動", "sceneId": "scene2", "targetYaw": "same", "targetPitch": "same" },
+                { "pitch": -5, "yaw": 0, "type": "scene", "text": "地点3へ移動", "sceneId": "scene3", "targetYaw": "same", "targetPitch": "same" },
+                // --- 追加：地点4へ移動 ---
+                { "pitch": -5, "yaw": 90, "type": "scene", "text": "地点4へ移動", "sceneId": "scene4", "targetYaw": "same", "targetPitch": "same" }
             ]
         },
         "scene2": {
@@ -185,21 +93,10 @@ pannellum.viewer('panorama', {
             "type": "equirectangular",
             "panorama": "68.jpg",
             "hotSpots": [
-                {
-                    "pitch": -5,
-                    "yaw": 30, 
-                    "type": "scene",
-                    "text": "地点1へ移動",
-                    "sceneId": "scene1",
-                    "targetYaw": "same",
-                    "targetPitch": "same"
-                },
-                {
-                    "pitch": 0,
-                    "yaw": 160, 
-                    "cssClass": "bulb-hotspot",
-                    "clickHandlerFunc": showQuiz
-                }
+                { "pitch": -5, "yaw": 30, "type": "scene", "text": "地点1へ移動", "sceneId": "scene1", "targetYaw": "same", "targetPitch": "same" },
+                { "pitch": 0, "yaw": 160, "cssClass": "bulb-hotspot", "clickHandlerFunc": showQuiz },
+                // --- 追加：地点2から地点4へ移動（角度は仮置き） ---
+                { "pitch": -5, "yaw": -90, "type": "scene", "text": "地点4へ移動", "sceneId": "scene4", "targetYaw": "same", "targetPitch": "same" }
             ]
         },
         "scene3": {
@@ -207,16 +104,19 @@ pannellum.viewer('panorama', {
             "type": "equirectangular",
             "panorama": "200.jpg",
             "hotSpots": [
-                // --- 修正箇所：地点1へ戻るアイコン ---
-                {
-                    "pitch": -5,
-                    "yaw": 180, // ★ 0度から振り返る位置（0 + 180 = 180度）に変更
-                    "type": "scene",
-                    "text": "地点1へ移動",
-                    "sceneId": "scene1",
-                    "targetYaw": "same",
-                    "targetPitch": "same"
-                }
+                { "pitch": -5, "yaw": 180, "type": "scene", "text": "地点1へ移動", "sceneId": "scene1", "targetYaw": "same", "targetPitch": "same" }
+            ]
+        },
+        // --- 追加：地点4 (201.jpg) の設定 ---
+        "scene4": {
+            "title": "地点4",
+            "type": "equirectangular",
+            "panorama": "201.jpg",
+            "hotSpots": [
+                // 地点1へ戻る（90 - 180 = -90度）
+                { "pitch": -5, "yaw": -90, "type": "scene", "text": "地点1へ移動", "sceneId": "scene1", "targetYaw": "same", "targetPitch": "same" },
+                // 地点2へ戻る（-90 - 180 = -270度 ≒ 90度）
+                { "pitch": -5, "yaw": 90, "type": "scene", "text": "地点2へ移動", "sceneId": "scene2", "targetYaw": "same", "targetPitch": "same" }
             ]
         }
     }
