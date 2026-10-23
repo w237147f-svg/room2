@@ -168,10 +168,10 @@ pannellum.viewer('panorama', {
                     "targetYaw": "same",
                     "targetPitch": "same"
                 },
-                // --- 地点3へ移動するアイコンを追加 ---
+                // --- 修正箇所：地点3へ移動するアイコン ---
                 {
                     "pitch": -5,
-                    "yaw": -180, // 画面中央を0度としたとき-180度の位置
+                    "yaw": 0, // ★ -180度から真逆の0度に変更
                     "type": "scene",
                     "text": "地点3へ移動",
                     "sceneId": "scene3",
@@ -202,15 +202,15 @@ pannellum.viewer('panorama', {
                 }
             ]
         },
-        // --- 新しく追加した地点3 (200.jpg) の設定 ---
         "scene3": {
             "title": "地点3",
             "type": "equirectangular",
             "panorama": "200.jpg",
             "hotSpots": [
+                // --- 修正箇所：地点1へ戻るアイコン ---
                 {
                     "pitch": -5,
-                    "yaw": 0, // 地点1から-180度で来たので、振り返る位置 (-180 + 180 = 0度)
+                    "yaw": 180, // ★ 0度から振り返る位置（0 + 180 = 180度）に変更
                     "type": "scene",
                     "text": "地点1へ移動",
                     "sceneId": "scene1",
